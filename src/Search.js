@@ -6,14 +6,16 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
-import { Avatar } from '@material-ui/core';
+import { Avatar, IconButton } from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
 
 const API_KEY = '6abbe3eb';
 
 const useStyles = makeStyles((theme) => ({
   search: {
-    margin: '1rem',
-
+    margin: '1rem .5rem',
+    width: '80%',
+    color: theme.palette.grey[700],
   },
   avatar: {
     color: theme.palette.text.secondary,
@@ -21,10 +23,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Search() {
+export default function Search({ addMovie }) {
   const [value, setValue] = React.useState(null);
   const [inputValue, setInputValue] = React.useState('');
   const [open, setOpen] = useState(false);
+  const [error, setError] = useState('');
   const [options, setOptions] = useState([]);
   const [loading, setLoading] = useState(false);
   const classes = useStyles();
@@ -90,72 +93,92 @@ export default function Search() {
     return () => {
       active = false;
     };
-  }, [value, inputValue, fetch]);
+  }, [value, inputValue, fetch, open]);
 
   useEffect(() => {
     if (!open) {
       setOptions([]);
+      setError('')
     }
   }, [open]);
 
+  const handleClick = async () => {
+    if (value) {
+      const movieUrl = `http://omdbapi.com/?apikey=6abbe3eb&i=${value.imdbID}`
+      const { data } = await axios.get(movieUrl);
+      addMovie(data);
+      setValue(null);
+    } else setError('Select a movie first');
+  }
+
   return (
-    <Autocomplete
-      id="asynchronous-demo"
-      className={classes.search}
-      open={open}
-      onOpen={() => {
-        if (inputValue.length < 3) {
-          setLoading(true);
-        }
-        setOpen(true);
-      }}
-      onClose={() => {
-        setLoading(false);
-        setOpen(false);
-      }}
-      value={value}
-      onChange={(event, newValue) => {
-        setOptions(newValue ? [newValue, ...options] : options);
-        setValue(newValue);
-      }}
-      onInputChange={(event, newInputValue) => {
-        setInputValue(newInputValue);
-      }}
-      getOptionSelected={(option, value) => option.name === value.name}
-      getOptionLabel={(option) => option.Title}
-      options={options}
-      renderOption={(option) => {
-        return (
-          <Grid container alignItems="center">
-            <Grid item>
-              <Avatar className={classes.avatar} alt={option.Title} src={option.Poster} />
+    <Grid container justify='center' alignItems='center'>
+      <Autocomplete
+        id="asynchronous-demo"
+        className={classes.search}
+        clearOnBlur={false}
+        open={open}
+        onOpen={() => {
+          if (inputValue.length < 3) {
+            setLoading(true);
+          }
+          setOpen(true);
+        }}
+        onClose={() => {
+          setLoading(false);
+          setOpen(false);
+        }}
+        value={value}
+        onChange={(event, newValue) => {
+          setOptions(newValue ? [newValue, ...options] : options);
+          setValue(newValue);
+        }}
+        onInputChange={(event, newInputValue) => {
+          setError('');
+          setInputValue(newInputValue);
+        }}
+        getOptionSelected={(option, value) => option.name === value.name}
+        getOptionLabel={(option) => option.Title}
+        options={options}
+        renderOption={(option) => {
+          return (
+            <Grid container alignItems="center">
+              <Grid item>
+                <Avatar className={classes.avatar} alt={option.Title} src={option.Poster} />
+              </Grid>
+              <Grid item xs>
+                <span>{option.Title}</span>
+                <Typography variant="body2" color="textSecondary">
+                  {option.Year}
+                </Typography>
+              </Grid>
             </Grid>
-            <Grid item xs>
-              <span>{option.Title}</span>
-              <Typography variant="body2" color="textSecondary">
-                {option.Year}
-              </Typography>
-            </Grid>
-          </Grid>
-        );
-      }}
-      loading={loading}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          label="Search a Movie"
-          variant="outlined"
-          InputProps={{
-            ...params.InputProps,
-            endAdornment: (
-              <React.Fragment>
-                {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                {params.InputProps.endAdornment}
-              </React.Fragment>
-            ),
-          }}
-        />
-      )}
-    />
+          );
+        }}
+        popupIcon={null}
+        noOptionsText={inputValue.length < 3 ? "Start typing to search" : "No movie found"}
+        loading={inputValue.length < 3 ? false : loading}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label={error ? error : "Search a Movie"}
+            variant="outlined"
+            error={error ? true : false}
+            InputProps={{
+              ...params.InputProps,
+              endAdornment: (
+                <React.Fragment>
+                  {loading && inputValue.length >= 3 ? <CircularProgress color="inherit" size={20} /> : null}
+                  {params.InputProps.endAdornment}
+                </React.Fragment>
+              ),
+            }}
+          />
+        )}
+      />
+      <IconButton onClick={handleClick}>
+        <AddIcon />
+      </IconButton>
+    </Grid>
   );
 }
