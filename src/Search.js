@@ -31,24 +31,22 @@ export default function Search({ addMovie }) {
   const [options, setOptions] = useState([]);
   const [loading, setLoading] = useState(false);
   const classes = useStyles();
-  let cancel = '';
+  const CancelToken = axios.CancelToken;
+  let source = React.useRef(CancelToken.source());
 
   const fetch = React.useCallback(async (query) => {
     try {
       setLoading(true);
       const searchUrl = `http://www.omdbapi.com/?apikey=${API_KEY}&s='${query}'`;
-      if (cancel) {
+      if (source.current) {
         // Cancel the previous request before making a new request
-        cancel.cancel();
+        source.current.cancel('Cancelled unnesessary request');
       }
       // Create a new CancelToken
-      cancel = axios.CancelToken.source();
+      source.current = CancelToken.source();
       if (inputValue.length < 3) return;
-      const { data } = await axios.get(searchUrl
-        ,
-        {
-          cancelToken: cancel.token,
-        }
+      const { data } = await axios.get(searchUrl,
+        { cancelToken: source.current.token }
       );
       setLoading(false);
       return data;
@@ -61,7 +59,7 @@ export default function Search({ addMovie }) {
         console.log('Something went wrong: ', error.message)
       }
     }
-  }, [inputValue])
+  }, [inputValue, CancelToken])
 
   useEffect(() => {
     let active = true;
@@ -82,7 +80,7 @@ export default function Search({ addMovie }) {
             newOptions = [value];
           }
           if (results.Search) {
-            newOptions = [...newOptions, ...results.Search.slice(0, 5)];
+            newOptions = [...newOptions, ...results.Search];
           }
           setOptions(newOptions);
           setLoading(false);
@@ -130,7 +128,7 @@ export default function Search({ addMovie }) {
         }}
         value={value}
         onChange={(event, newValue) => {
-          setOptions(newValue ? [newValue, ...options] : options);
+          setOptions(options);
           setValue(newValue);
         }}
         onInputChange={(event, newInputValue) => {
@@ -176,7 +174,7 @@ export default function Search({ addMovie }) {
           />
         )}
       />
-      <IconButton onClick={handleClick}>
+      <IconButton aria-label='Add Movie' title='Add Movie' onClick={handleClick}>
         <AddIcon />
       </IconButton>
     </Grid>
