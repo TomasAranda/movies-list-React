@@ -16,6 +16,11 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     backgroundColor: theme.palette.background.paper,
   },
+  tab: {
+    maxWidth: '45%',
+    width: '45%',
+    margin: '0 auto'
+  }
 }));
 
 function TabPanel(props) {
@@ -25,8 +30,8 @@ function TabPanel(props) {
     <div
       role="tabpanel"
       hidden={value !== index}
-      id={`scrollable-force-tabpanel-${index}`}
-      aria-labelledby={`scrollable-force-tab-${index}`}
+      id={`tabpanel-${index}`}
+      aria-labelledby={`tab-${index}`}
       {...other}
     >
       {value === index && (
@@ -40,8 +45,8 @@ function TabPanel(props) {
 
 function a11yProps(index) {
   return {
-    id: `scrollable-force-tab-${index}`,
-    'aria-controls': `scrollable-force-tabpanel-${index}`,
+    id: `tab-${index}`,
+    'aria-controls': `tabpanel-${index}`,
   };
 }
 
@@ -59,14 +64,22 @@ export default function Movies({ movies, removeMovie }) {
         <Tabs
           value={value}
           onChange={handleChange}
-          variant="scrollable"
-          scrollButtons="on"
           indicatorColor="primary"
           textColor="primary"
-          aria-label="scrollable force tabs example"
+          aria-label="movies lists tabs"
         >
-          <Tab label="My Movies" icon={<ThumbUp />} {...a11yProps(0)} />
-          <Tab label="Shared Likes" icon={<FavoriteIcon />} {...a11yProps(1)} />
+          <Tab
+            className={classes.tab}
+            label="My Movies"
+            icon={<ThumbUp />}
+            {...a11yProps(0)}
+          />
+          <Tab
+            className={classes.tab}
+            label="Shared Likes"
+            icon={<FavoriteIcon />}
+            {...a11yProps(1)}
+          />
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
