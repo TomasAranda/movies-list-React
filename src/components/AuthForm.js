@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { authUser } from '../store/actions/auth';
 
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -18,9 +18,12 @@ import { Link } from 'react-router-dom';
 
 import { useStyles } from '../styles/AuthFormStyles';
 
-export default function AuthForm({ signUp, buttonText, history }) {
+export default memo(function AuthForm({ signUp, buttonText, history }) {
+  console.log('REnder AUTH FORM')
   const classes = useStyles({ signUp });
+  const authType = signUp ? 'signup' : 'signin';
   const dispatch = useDispatch();
+  const error = useSelector(state => state.errors);
   const [values, setValues] = useState({
     username: '',
     email: '',
@@ -43,7 +46,6 @@ export default function AuthForm({ signUp, buttonText, history }) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const authType = signUp ? 'signup' : 'signin';
     dispatch(authUser(authType, { ...values }))
       .then(user => {
         if (!user.group) history.push('/auth/signup/group');
@@ -61,7 +63,8 @@ export default function AuthForm({ signUp, buttonText, history }) {
         <TextField
           id='auth-username'
           className={classes.textField}
-          label='Username'
+          label={`${!signUp ? 'Email or ' : ''}Username`}
+          error={Boolean(error[`authUser-${authType}`])}
           variant='filled'
           type='text'
           required
@@ -81,6 +84,7 @@ export default function AuthForm({ signUp, buttonText, history }) {
             id='auth-email'
             className={classes.textField}
             label='Email'
+            error={Boolean(error['authUser-signup'])}
             variant='filled'
             type='email'
             required
@@ -118,6 +122,7 @@ export default function AuthForm({ signUp, buttonText, history }) {
           id='auth-password'
           className={classes.textField}
           label='Password'
+          error={Boolean(error['authUser-signin'])}
           variant='filled'
           type={showPassword ? 'text' : 'password'}
           required
@@ -140,6 +145,11 @@ export default function AuthForm({ signUp, buttonText, history }) {
             ),
           }}
         />
+        {error[`authUser-${authType}`] &&
+          <Typography className={classes.errorText} variant='body2' align='center'>
+            {error[`authUser-${authType}`].message}
+          </Typography>
+        }
         {!signUp &&
           <Typography className={classes.signupText} variant='body1' align='center'>
             Don't have an account yet? <Link to='signup' style={{ color: 'white' }}>Sign up!</Link>
@@ -157,4 +167,4 @@ export default function AuthForm({ signUp, buttonText, history }) {
       </form>
     </Grid>
   )
-}
+})

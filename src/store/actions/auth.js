@@ -24,7 +24,7 @@ export function logout() {
         dispatch(setCurrentGroup(null));
         resolve();
       } catch (err) {
-        dispatch(addError({ errorType: 'logoutUser', errorMessage: err }));
+        dispatch(addError({ errorType: 'logoutUser', message: err }));
         reject();
       }
     })
@@ -42,8 +42,12 @@ export function authUser(type, userData) {
         dispatch(removeError());
         resolve(user); // API call suceeded
       } catch (err) {
-        if (err) dispatch(addError({ errorType: 'authUser', errorMessage: err.message }));
-        reject(); // API call failed
+        const error = {
+          errorType: `authUser-${type}`,
+          message: err.message
+        }
+        if (err) dispatch(addError(error));
+        reject(err); // API call failed
       }
     })
   }

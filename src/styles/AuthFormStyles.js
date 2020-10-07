@@ -57,4 +57,8 @@ export const useStyles = makeStyles((theme) => ({
       display: 'inline',
     },
   },
+  errorText: {
+    marginBottom: theme.spacing(1),
+    color: theme.palette.error.main,
+  },
 }));

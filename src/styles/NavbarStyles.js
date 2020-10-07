@@ -27,9 +27,4 @@ export const useStyles = makeStyles(theme => ({
   icon: {
     color: '#fff',
   },
-  // menu: {
-  //   '& .MuiMenu-paper': {
-  //     border: '1px solid #d3d4d5',
-  //   }
-  // }
 }));

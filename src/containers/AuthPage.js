@@ -1,14 +1,13 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
-import Page from '../components/Homepage';
+import Page from './Homepage';
 import GroupForm from '../components/GroupForm';
 import AuthForm from '../components/AuthForm';
 
 import withAuth from '../hocs/withAuth';
 
 export default function AuthPage() {
-
   const WithAuthGroupForm = withAuth(GroupForm);
   return (
     <Page>
