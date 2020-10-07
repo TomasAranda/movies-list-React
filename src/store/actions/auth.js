@@ -1,5 +1,6 @@
 import { apiCall, setTokenHeader } from '../../services/api';
 import { SET_CURRENT_USER } from '../actionTypes';
+import { setCurrentGroup } from './group';
 import { addError, removeError } from './errors';
 
 export function setCurrentUser(user) {
@@ -15,27 +16,35 @@ export function setAuthorizationToken(token) {
 
 export function logout() {
   return dispatch => {
-    localStorage.clear();
-    setAuthorizationToken(false);
-    dispatch(setCurrentUser({}))
+    return new Promise(async (resolve, reject) => {
+      try {
+        localStorage.clear();
+        setAuthorizationToken(false);
+        dispatch(setCurrentUser({}));
+        dispatch(setCurrentGroup(null));
+        resolve();
+      } catch (err) {
+        dispatch(addError({ errorType: 'logoutUser', errorMessage: err }));
+        reject();
+      }
+    })
   }
 }
 
 export function authUser(type, userData) {
   return dispatch => {
-    return new Promise((resolve, reject) => {
-      return apiCall('post', `/api/auth/${type}`, userData)
-        .then(({ token, ...user }) => {
-          localStorage.setItem('jwtToken', token);
-          setAuthorizationToken(token);
-          dispatch(setCurrentUser(user));
-          dispatch(removeError());
-          resolve(); // API call suceeded
-        })
-        .catch(err => {
-          if(err) dispatch(addError({ errorType: 'authUser', message: err.message }));
-          reject(); // API call failed
-        })
+    return new Promise(async (resolve, reject) => {
+      try {
+        const { token, ...user } = await apiCall('post', `/api/auth/${type}`, userData);
+        localStorage.setItem('jwtToken', token);
+        setAuthorizationToken(token);
+        dispatch(setCurrentUser(user));
+        dispatch(removeError());
+        resolve(user); // API call suceeded
+      } catch (err) {
+        if (err) dispatch(addError({ errorType: 'authUser', errorMessage: err.message }));
+        reject(); // API call failed
+      }
     })
   }
 }

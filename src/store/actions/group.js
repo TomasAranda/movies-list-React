@@ -9,7 +9,7 @@ export function setCurrentGroup(group) {
   }
 }
 
-function findGroup(groupName) {
+export function findGroup(groupName) {
   return new Promise((resolve, reject) => {
     apiCall('get', '/api/group')
       .then(data => {
@@ -29,6 +29,7 @@ export function createGroup(groupName) {
     return new Promise(async (resolve, reject) => {
       try {
         const group = await apiCall('post', '/api/group', { name: groupName });
+        console.log(group);
         dispatch(setCurrentGroup(group));
         dispatch(removeError());
         resolve(); // API call suceeded
@@ -46,8 +47,9 @@ export function editGroup(groupName) {
       try {
         const foundGroup = await findGroup(groupName);
         const group = await apiCall('put', `/api/group/${foundGroup._id}`);
-        dispatch(setCurrentGroup(group));
-        dispatch(removeError());
+        await dispatch(setCurrentGroup(group));
+        console.log(group);
+        await dispatch(removeError());
         resolve(); // API call suceeded
       } catch (err) {
         if (err) dispatch(addError({ errorType: 'editGroup', message: err.message }));

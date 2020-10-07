@@ -5,7 +5,11 @@ import Page from '../components/Homepage';
 import GroupForm from '../components/GroupForm';
 import AuthForm from '../components/AuthForm';
 
+import withAuth from '../hocs/withAuth';
+
 export default function AuthPage() {
+
+  const WithAuthGroupForm = withAuth(GroupForm);
   return (
     <Page>
       <Switch>
@@ -22,7 +26,7 @@ export default function AuthPage() {
         <Route
           exact
           path='/auth/signup/group'
-          render={props => <GroupForm {...props} />}
+          render={props => <WithAuthGroupForm {...props} />}
         />
       </Switch>
     </Page>

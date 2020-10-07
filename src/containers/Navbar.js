@@ -1,37 +1,60 @@
-import React, { useState } from 'react';
+import React, { useState, memo, useCallback } from 'react';
 
+import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import SendIcon from '@material-ui/icons/Send';
-import DraftsIcon from '@material-ui/icons/Drafts';
-import InboxIcon from '@material-ui/icons/Inbox';
+import GroupIcon from '@material-ui/icons/Group';
+import LogoutIcon from '@material-ui/icons/MeetingRoom';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import Avatar from '@material-ui/core/Avatar';
+import ListSubheader from '@material-ui/core/ListSubheader';
 
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { useStyles } from '../styles/NavbarStyles';
-import { Avatar } from '@material-ui/core';
+import { logout } from '../store/actions/auth';
+
+const StyledMenu = memo(withStyles({
+  paper: {
+    border: '1px solid #d3d4d5',
+  },
+})((props) => (
+  <Menu
+    elevation={0}
+    getContentAnchorEl={null}
+    anchorOrigin={{
+      vertical: 'bottom',
+      horizontal: 'center',
+    }}
+    transformOrigin={{
+      vertical: 'top',
+      horizontal: 'center',
+    }}
+    {...props}
+  />
+)));
 
 export default function Navbar(props) {
-  const [anchorEl, setAnchorEl] = useState(null);
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
   const classes = useStyles();
+  const dispatch = useDispatch()
   const currentUser = useSelector(state => state.currentUser);
+  const [anchorEl, setAnchorEl] = useState(null)
+  const anchorElRef = useCallback(node => {
+    if (node === null) setAnchorEl(null);
+  }, []);
+
+  const handleClick = useCallback((event) => setAnchorEl(event.currentTarget), []);
+
+  const handleClose = useCallback((event) => setAnchorEl(null), []);
+
+  const handleLogout = () => dispatch(logout());
 
   return (
     <>
@@ -49,54 +72,46 @@ export default function Navbar(props) {
                 edge="end"
                 aria-label="account of current user"
                 aria-haspopup="true"
+                ref={anchorElRef}
                 onClick={handleClick}
                 className={classes.icon}
               >
                 {currentUser.user['profileImageUrl'] ? (
-                  <Avatar src={currentUser.user.profileImageUrl} alt={currentUser.user.username}/>
+                  <Avatar
+                    src={currentUser.user.profileImageUrl}
+                    alt={currentUser.user.username}
+                  />
                 ) : (
                     <AccountCircle />
                   )}
               </IconButton>
-              <Menu
-                id="customized-menu"
+              <StyledMenu
+                id="user-menu"
                 anchorEl={anchorEl}
-                keepMounted
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
-                elevation={0}
-                getContentAnchorEl={null}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'right',
-                }}
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
               >
+                <ListSubheader>
+                  Group
+                  </ListSubheader>
                 <MenuItem>
                   <ListItemIcon>
-                    <SendIcon fontSize="small" />
+                    <GroupIcon fontSize="small" />
                   </ListItemIcon>
-                  <ListItemText primary="Sent mail" />
+                  <ListItemText primary="See friends in group" />
                 </MenuItem>
-                <MenuItem>
+                <ListSubheader>
+                  User
+                  </ListSubheader>
+                <MenuItem onClick={handleLogout}>
                   <ListItemIcon>
-                    <DraftsIcon fontSize="small" />
+                    <LogoutIcon fontSize="small" />
                   </ListItemIcon>
-                  <ListItemText primary="Drafts" />
+                  <ListItemText primary="Logout" />
                 </MenuItem>
-                <MenuItem>
-                  <ListItemIcon>
-                    <InboxIcon fontSize="small" />
-                  </ListItemIcon>
-                  <ListItemText primary="Inbox" />
-                </MenuItem>
-              </Menu>
+              </StyledMenu>
             </>
-          )
-          }
+          )}
         </Toolbar>
       </AppBar>
     </>

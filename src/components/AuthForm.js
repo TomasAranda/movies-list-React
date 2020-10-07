@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { authUser } from '../store/actions/auth';
 
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -20,7 +20,6 @@ import { useStyles } from '../styles/AuthFormStyles';
 
 export default function AuthForm({ signUp, buttonText, history }) {
   const classes = useStyles({ signUp });
-  const currentUser = useSelector(state => state.currentUser);
   const dispatch = useDispatch();
   const [values, setValues] = useState({
     username: '',
@@ -42,14 +41,15 @@ export default function AuthForm({ signUp, buttonText, history }) {
     event.preventDefault();
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     const authType = signUp ? 'signup' : 'signin';
     dispatch(authUser(authType, { ...values }))
-      .then(() => {
-        if (!currentUser.user.group) history.push('/auth/signup/group');
+      .then(user => {
+        if (!user.group) history.push('/auth/signup/group');
         else history.push('/list');
       })
+      .catch(err => console.log(err));
   };
 
   return (
