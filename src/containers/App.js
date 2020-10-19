@@ -22,8 +22,10 @@ const store = configureStore();
     try {
       const decoded = jwtDecode(localStorage.jwtToken);
       store.dispatch(setCurrentUser(decoded));
-      const group = await apiCall('get', `/api/group/${decoded.group}`);
-      store.dispatch(setCurrentGroup(group));
+      if (decoded.group) {
+        const group = await apiCall('get', `/api/group/${decoded.group}`);
+        store.dispatch(setCurrentGroup(group));
+      }
     } catch (e) {
       store.dispatch(setCurrentUser({}));
     }

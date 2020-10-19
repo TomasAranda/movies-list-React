@@ -19,7 +19,6 @@ import { Link } from 'react-router-dom';
 import { useStyles } from '../styles/AuthFormStyles';
 
 export default memo(function AuthForm({ signUp, buttonText, history }) {
-  console.log('REnder AUTH FORM')
   const classes = useStyles({ signUp });
   const authType = signUp ? 'signup' : 'signin';
   const dispatch = useDispatch();
@@ -105,6 +104,9 @@ export default memo(function AuthForm({ signUp, buttonText, history }) {
             label='Profile Image Url'
             variant='filled'
             type='text'
+            inputProps={{
+              maxLength: 150
+            }}
             autoComplete='off'
             value={values.profileImageUrl}
             onChange={handleChange('profileImageUrl')}

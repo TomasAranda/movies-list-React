@@ -15,7 +15,7 @@ export default function Onboarding() {
     <Page>
       <Grid item className={classes.content}>
         <Typography className={classes.title} variant='h1' align='center' color='textPrimary'>Movies/Series Shared Watchlist</Typography>
-        <Typography className={classes.subTitle} variant='h5' align='center'>Share your most loved movies with friends and see your matches</Typography>
+        <Typography className={classes.subTitle} variant='h5' align='center'>Share your favorites movies with friends and see your matches</Typography>
         <Divider className={classes.divider} />
         <Typography variant='body1' align='center'>Register to start</Typography>
         <Grid className={classes.registerButtons} container justify='center'>

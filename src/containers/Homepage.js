@@ -10,11 +10,11 @@ import Footer from '../components/Footer';
 import { useStyles } from '../styles/PageStyles'
 
 export default function Page({ children }) {
-  const isUserAuthenticated = useSelector(state => state.currentUser.isAuthenticated);
+  const { isUserAuthenticated, user } = useSelector(state => state.currentUser);
   const classes = useStyles();
   return (
     <>
-      {isUserAuthenticated && (
+      {isUserAuthenticated && user.group && (
         <Redirect to='/list' />
       )}
       <section className={classes.background}>

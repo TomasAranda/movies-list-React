@@ -18,6 +18,7 @@ export function apiCall(method, path, data) {
       })
       .catch(err => {
         console.log(err);
+        if (err.request) reject({ message: "Sorry, something went wrong. Please try again later" });
         reject(err.response.data.error)
       })
   })

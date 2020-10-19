@@ -38,15 +38,20 @@ export const useStyles = makeStyles((theme) => ({
   paper: {
     backgroundColor: 'rgba(0,0,0,.75)',
     color: '#757575',
-    [theme.breakpoints.up('sm')]: {
-      width: '80%',
-      padding: theme.spacing(4),
-    },
     height: '70%',
     minHeight: '380px',
     width: '100%',
     padding: theme.spacing(2),
     maxWidth: '700px',
+    [theme.breakpoints.up('sm')]: {
+      width: '80%',
+      padding: theme.spacing(4),
+    },
+    [theme.breakpoints.up('lg')]: {
+      minHeight: '600px',
+      minWidth: '800px',
+      padding: theme.spacing(4),
+    },
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
