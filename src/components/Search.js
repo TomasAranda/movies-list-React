@@ -116,12 +116,16 @@ export default function Search({ addMovie }) {
   }, [open]);
 
   const handleClick = async () => {
-    if (value) {
-      const movieUrl = `http://omdbapi.com/?apikey=6abbe3eb&i=${value.imdbID}`
-      const { data } = await axios.get(movieUrl);
-      addMovie(data);
-      setValue(null);
-    } else setError('Select a movie first');
+    try {
+      if (value) {
+        const movieUrl = `http://omdbapi.com/?apikey=6abbe3eb&i=${value.imdbID}`
+        const { data } = await axios.get(movieUrl);
+        addMovie(data);
+        setValue(null);
+      } else setError('Select a movie first');
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (

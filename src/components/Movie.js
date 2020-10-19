@@ -49,14 +49,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Movie({ imdbID, Title, Poster, Plot, removeMovie }) {
+export default function Movie({ id, imdbID, Title, Poster, Plot, removeMovie }) {
   const classes = useStyles();
   return (
     <Grid key={imdbID} item xs={12} sm={5} md={4} lg={3} container justify='center'>
       <Card className={classes.card} raised>
         <IconButton
           className={classes.delete}
-          onClick={() => removeMovie(imdbID)}
+          onClick={() => removeMovie(id)}
           aria-label='Delete Movie'
           title='Delete Movie'
         >

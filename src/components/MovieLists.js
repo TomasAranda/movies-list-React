@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
@@ -50,9 +50,9 @@ function a11yProps(index) {
   };
 }
 
-export default function Movies({ movies, removeMovie }) {
+export default function MoviesLists({ movies, removeMovie }) {
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -84,14 +84,28 @@ export default function Movies({ movies, removeMovie }) {
       </AppBar>
       <TabPanel value={value} index={0}>
         <Grid container direction='row' justify='center' >
-          {movies.map(({ imdbID, Title, Poster, Plot }) => (
+          {movies.userMovies.map(({ _id, imdbID, Title, Poster, Plot }) => (
+            <Movie
+              key={imdbID}
+              id={_id}
+              imdbID={imdbID}
+              Title={Title}
+              Poster={Poster}
+              Plot={Plot}
+              removeMovie={removeMovie}
+            />
+          ))}
+        </Grid>
+      </TabPanel>
+      <TabPanel value={value} index={1}>
+        <Grid container direction='row' justify='center' >
+          {movies.sharedMovies.map(({ imdbID, Title, Poster, Plot }) => (
             <Movie
               key={imdbID}
               imdbID={imdbID}
               Title={Title}
               Poster={Poster}
               Plot={Plot}
-              removeMovie={removeMovie}
             />
           ))}
         </Grid>

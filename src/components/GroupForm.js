@@ -20,18 +20,14 @@ export default function GroupForm({ history }) {
   const handleCreateGroup = async (event) => {
     event.preventDefault();
     dispatch(createGroup(newGroup))
-      .then(() => {
-        history.push('/list');
-      })
+      .then(() => history.push('/list'))
       .catch(err => console.log(err.message));
   };
 
   const handleJoinGroup = async (event) => {
     event.preventDefault();
     dispatch(editGroup(existentGroup))
-      .then(() => {
-        history.push('/list');
-      })
+      .then(() => history.push('/list'))
       .catch(err => console.log(err.message));
   };
 

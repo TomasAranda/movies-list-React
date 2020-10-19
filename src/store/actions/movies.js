@@ -12,29 +12,44 @@ export const remove = id => ({
   id
 });
 
-export const removeMovie = (group_id, user_id, movie_id) => {
-  return dispatch => {
-    return apiCall("delete", `/api/group/${group_id}/user/${user_id}/movies/${movie_id}`)
-      .then(() => dispatch(remove(movie_id)))
-      .catch(err => { if (err) addError({ errorType: 'deleteMovie', message: err.message }) });
+export const removeMovie = movie_id => {
+  return async (dispatch, getState) => {
+    let { currentUser } = getState();
+    const group_id = currentUser.user.group;
+    const user_id = currentUser.user.id;
+    try {
+      await apiCall("delete", `/api/group/${group_id}/user/${user_id}/movies/${movie_id}`);
+      return dispatch(remove(movie_id));
+    } catch (err) {
+      if (err)
+        addError({ errorType: 'deleteMovie', message: err.message });
+    }
   };
 };
 
-export const fetchMovies = (group_id, user_id) => {
-  return dispatch => {
-    return apiCall("GET", `/api/group/${group_id}/user/${user_id}/movies`)
-      .then(res => {
-        dispatch(loadMovies(res));
-      })
-      .catch(err => { if (err) dispatch(addError({ errorType: 'fetchMovies', message: err.message })) });
+export const fetchMovies = () => {
+  return async (dispatch, getState) => {
+    let { currentUser } = getState();
+    const group_id = currentUser.user.group;
+    const user_id = currentUser.user.id;
+    try {
+      const res = await apiCall("GET", `/api/group/${group_id}/user/${user_id}/movies`);
+      dispatch(loadMovies(res));
+    } catch (err) {
+      if (err)
+        dispatch(addError({ errorType: 'fetchMovies', message: err.message }));
+    }
   };
 };
 
-export const addMovie = (movieData) => (dispatch, getState) => {
+export const addMovie = (movieData) => async (dispatch, getState) => {
   let { currentUser } = getState();
   const group_id = currentUser.user.group;
   const user_id = currentUser.user.id;
-  return apiCall("post", `/api/group/${group_id}/user/${user_id}/movies`, { ...movieData })
-    .then(res => { console.log('Movie added! (FROM actions/movies.js)') })
-    .catch(err => { if (err) dispatch(addError({ errorType: 'addMovie', message: err.message })) });
+  try {
+    const res = await apiCall("post", `/api/group/${group_id}/user/${user_id}/movies`, { ...movieData });
+    dispatch(loadMovies(res));
+  } catch (err) {
+    if (err) dispatch(addError({ errorType: 'addMovie', message: err.message }));
+  }
 };
