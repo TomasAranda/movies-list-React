@@ -39,6 +39,10 @@ export function authUser(type, userData) {
         localStorage.setItem('jwtToken', token);
         setAuthorizationToken(token);
         dispatch(setCurrentUser(user));
+        if(user.group) {
+          const group = await apiCall('get', `/api/group/${user.group}`);
+          dispatch(setCurrentGroup(group))
+        }
         dispatch(removeError());
         resolve(user); // API call suceeded
       } catch (err) {

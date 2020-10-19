@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 
 import Page from './Homepage';
 import GroupForm from '../components/GroupForm';
@@ -27,6 +27,9 @@ export default function AuthPage() {
           path='/auth/signup/group'
           render={props => <WithAuthGroupForm {...props} />}
         />
+        <Route>
+          <Redirect to='/auth/signin' />
+        </Route>
       </Switch>
     </Page>
   )
