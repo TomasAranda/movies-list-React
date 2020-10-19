@@ -26,5 +26,7 @@ export const useStyles = makeStyles(theme => ({
   },
   icon: {
     color: '#fff',
+    width: theme.spacing(4),
+    height: theme.spacing(4),
   },
 }));

@@ -10,21 +10,24 @@ import Footer from '../components/Footer';
 import { useStyles } from '../styles/PageStyles'
 
 export default function Page({ children }) {
-  const { isUserAuthenticated, user } = useSelector(state => state.currentUser);
+  const { isAuthenticated, user } = useSelector(state => state.currentUser);
   const classes = useStyles();
   return (
     <>
-      {isUserAuthenticated && user.group && (
+      {(isAuthenticated && user.group) ? (
         <Redirect to='/list' />
-      )}
-      <section className={classes.background}>
-        <Grid className={classes.root} container justify='center' alignItems='center'>
-          <Paper className={classes.paper}>
-            {children}
-          </Paper>
-        </Grid>
-        <Footer />
-      </section>
+      ) : (
+          <>
+            <section className={classes.background}>
+              <Grid className={classes.root} container justify='center' alignItems='center'>
+                <Paper className={classes.paper}>
+                  {children}
+                </Paper>
+              </Grid>
+            </section>
+            <Footer />
+          </>
+        )}
     </>
   )
 }
