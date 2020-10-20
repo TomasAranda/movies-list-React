@@ -129,75 +129,73 @@ export default function Search({ addMovie }) {
   }
 
   return (
-    <>
-      <Grid className={classes.root} container justify='center' alignItems='center'>
-        <Autocomplete
-          id="asynchronous-demo"
-          className={classes.search}
-          clearOnBlur={false}
-          open={open}
-          onOpen={() => {
-            if (inputValue.length > 1) {
-              setLoading(true);
-            }
-            setOpen(true);
-          }}
-          onClose={() => {
-            setLoading(false);
-            setOpen(false);
-          }}
-          value={value}
-          onChange={(event, newValue) => {
-            setOptions(options);
-            setValue(newValue);
-          }}
-          onInputChange={(event, newInputValue) => {
-            setError('');
-            setInputValue(newInputValue);
-          }}
-          getOptionSelected={(option, value) => option.name === value.name}
-          getOptionLabel={(option) => option.Title}
-          options={options}
-          renderOption={(option) => {
-            return (
-              <Grid container alignItems="center">
-                <Grid item>
-                  <Avatar className={classes.avatar} alt={option.Title} src={option.Poster} />
-                </Grid>
-                <Grid item xs>
-                  <span>{option.Title}</span>
-                  <Typography variant="body2" color="textSecondary">
-                    {option.Year}
-                  </Typography>
-                </Grid>
+    <Grid className={classes.root} container justify='center' alignItems='center'>
+      <Autocomplete
+        id="asynchronous-demo"
+        className={classes.search}
+        clearOnBlur={false}
+        open={open}
+        onOpen={() => {
+          if (inputValue.length > 1) {
+            setLoading(true);
+          }
+          setOpen(true);
+        }}
+        onClose={() => {
+          setLoading(false);
+          setOpen(false);
+        }}
+        value={value}
+        onChange={(event, newValue) => {
+          setOptions(options);
+          setValue(newValue);
+        }}
+        onInputChange={(event, newInputValue) => {
+          setError('');
+          setInputValue(newInputValue);
+        }}
+        getOptionSelected={(option, value) => option.name === value.name}
+        getOptionLabel={(option) => option.Title}
+        options={options}
+        renderOption={(option) => {
+          return (
+            <Grid container alignItems="center">
+              <Grid item>
+                <Avatar className={classes.avatar} alt={option.Title} src={option.Poster} />
               </Grid>
-            );
-          }}
-          popupIcon={null}
-          noOptionsText={inputValue.length < 1 ? "Start typing to search" : "No movie found"}
-          loading={inputValue.length < 1 ? false : loading}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label={error ? error : "Search a Movie"}
-              variant="outlined"
-              error={error ? true : false}
-              InputProps={{
-                ...params.InputProps,
-                endAdornment: (
-                  <React.Fragment>
-                    {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                    {params.InputProps.endAdornment}
-                  </React.Fragment>
-                ),
-              }}
-            />
-          )}
-        />
-        <IconButton className={classes.addButton} aria-label='Add Movie' title='Add Movie' onClick={handleClick}>
-          <AddIcon />
-        </IconButton>
-      </Grid>
-    </>
+              <Grid item xs>
+                <span>{option.Title}</span>
+                <Typography variant="body2" color="textSecondary">
+                  {option.Year}
+                </Typography>
+              </Grid>
+            </Grid>
+          );
+        }}
+        popupIcon={null}
+        noOptionsText={inputValue.length < 1 ? "Start typing to search" : "No movie found"}
+        loading={inputValue.length < 1 ? false : loading}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label={error ? error : "Search a Movie"}
+            variant="outlined"
+            error={error ? true : false}
+            InputProps={{
+              ...params.InputProps,
+              endAdornment: (
+                <React.Fragment>
+                  {loading ? <CircularProgress color="inherit" size={20} /> : null}
+                  {params.InputProps.endAdornment}
+                </React.Fragment>
+              ),
+            }}
+          />
+        )}
+      />
+      <IconButton className={classes.addButton} aria-label='Add Movie' title='Add Movie' onClick={handleClick}>
+        <AddIcon />
+      </IconButton>
+    </Grid>
   );
 }

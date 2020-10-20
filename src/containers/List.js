@@ -16,7 +16,6 @@ export default function List() {
 
   useEffect(() => {
     dispatch(fetchMovies())
-      .then(() => console.log("Fetched Movies"))
       .catch(() => console.log("Error fetching movies"));
   }, [dispatch])
 

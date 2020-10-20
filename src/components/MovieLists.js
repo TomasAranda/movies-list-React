@@ -15,12 +15,13 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     width: '100%',
     backgroundColor: theme.palette.background.paper,
+    minHeight: '84.9vh',
   },
   tab: {
     maxWidth: '45%',
     width: '45%',
     margin: '0 auto'
-  }
+  },
 }));
 
 function TabPanel(props) {
@@ -82,32 +83,42 @@ export default function MoviesLists({ movies, removeMovie }) {
           />
         </Tabs>
       </AppBar>
-      <TabPanel value={value} index={0}>
+      <TabPanel className={classes.tabPanel} value={value} index={0}>
         <Grid container direction='row' justify='center' >
-          {movies.userMovies.map(({ _id, imdbID, Title, Poster, Plot }) => (
-            <Movie
-              key={imdbID}
-              id={_id}
-              imdbID={imdbID}
-              Title={Title}
-              Poster={Poster}
-              Plot={Plot}
-              removeMovie={removeMovie}
-            />
-          ))}
+          {movies.userMovies.length ? (
+            movies.userMovies.map(({ _id, imdbID, Title, Poster, Plot }) => (
+              <Movie
+                key={imdbID}
+                id={_id}
+                imdbID={imdbID}
+                Title={Title}
+                Poster={Poster}
+                Plot={Plot}
+                removeMovie={removeMovie}
+              />
+            ))
+          ) : (
+            <p>No movies added yet. Try searching one up there ↑</p>
+          )
+        }
         </Grid>
       </TabPanel>
-      <TabPanel value={value} index={1}>
+      <TabPanel className={classes.tabPanel} value={value} index={1}>
         <Grid container direction='row' justify='center' >
-          {movies.sharedMovies.map(({ imdbID, Title, Poster, Plot }) => (
-            <Movie
-              key={imdbID}
-              imdbID={imdbID}
-              Title={Title}
-              Poster={Poster}
-              Plot={Plot}
-            />
-          ))}
+          {movies.sharedMovies.length ? (
+            movies.sharedMovies.map(({ users, imdbID, Title, Poster, Plot }) => (
+              <Movie
+                key={imdbID}
+                users={users}
+                imdbID={imdbID}
+                Title={Title}
+                Poster={Poster}
+                Plot={Plot}
+              />
+            ))
+          ):(
+            <p>No matches found yet.</p>
+          )}
         </Grid>
       </TabPanel>
     </div>
