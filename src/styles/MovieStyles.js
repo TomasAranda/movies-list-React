@@ -19,7 +19,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   content: {
     maxWidth: 300,
-    maxHeight: 150,
+    minHeight: 150,
     overflow: 'hidden',
     backgroundColor: 'rgba(0,0,0,.9)',
     position: 'relative',
@@ -31,19 +31,12 @@ export const useStyles = makeStyles((theme) => ({
     right: '5px',
     zIndex: 5,
     color: theme.palette.primary.light,
-  },
-  deleteButton: {
-    position: 'absolute',
-    top: '5px',
-    right: '5px',
-    zIndex: 5,
-    color: theme.palette.primary.light,
-    backgroundColor: 'rgba(255,255,255,.05)',
     opacity: 0,
     transform: 'scale(.5)',
     transition: 'all .1s ease-in-out',
-    '& svg': {
-      textShadow: '0px 0px 4px black',
-    },
+  },
+  friendsAvatar: {
+    transform: 'scale(1)',
+    opacity: 1,
   },
 }));

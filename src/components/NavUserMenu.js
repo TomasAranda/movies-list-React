@@ -12,7 +12,7 @@ import Avatar from '@material-ui/core/Avatar';
 import ListSubheader from '@material-ui/core/ListSubheader';
 
 import { useStyles } from '../styles/NavbarStyles';
-import GroupUsers from './GroupUsers';
+import UsersDialog from './UsersDialog';
 
 const StyledMenu = memo(withStyles({
   paper: {
@@ -86,7 +86,7 @@ export default function NavUserMenu({ user, group, onLogout }) {
         </MenuItem>
       </StyledMenu>
       {isDialogOpen && (
-        <GroupUsers
+        <UsersDialog
           open={isDialogOpen}
           group={group}
           handleClose={() => setOpen(false)}
