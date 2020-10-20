@@ -9,10 +9,10 @@ import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
-import ListSubheader from '@material-ui/core/ListSubheader';
 
 import { useStyles } from '../styles/NavbarStyles';
 import UsersDialog from './UsersDialog';
+import { Typography } from '@material-ui/core';
 
 const StyledMenu = memo(withStyles({
   paper: {
@@ -50,6 +50,7 @@ export default function NavUserMenu({ user, group, onLogout }) {
       <IconButton
         edge="end"
         aria-label="account of current user"
+        title='Account info'
         aria-haspopup="true"
         ref={anchorElRef}
         onClick={handleClick}
@@ -66,18 +67,13 @@ export default function NavUserMenu({ user, group, onLogout }) {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <ListSubheader>
-          Group
-        </ListSubheader>
+        {group && <Typography variant='h5' className={classes.menuTitle}>"{group.name}"</Typography>}
         <MenuItem onClick={() => setOpen(true)}>
           <ListItemIcon>
             <GroupIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText primary="See friends in group" />
         </MenuItem>
-        <ListSubheader>
-          User
-        </ListSubheader>
         <MenuItem onClick={onLogout}>
           <ListItemIcon>
             <LogoutIcon fontSize="small" />

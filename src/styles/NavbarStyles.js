@@ -29,4 +29,9 @@ export const useStyles = makeStyles(theme => ({
     width: theme.spacing(4),
     height: theme.spacing(4),
   },
+  menuTitle: {
+    marginLeft: theme.spacing(2),
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+  },
 }));
