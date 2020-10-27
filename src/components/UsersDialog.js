@@ -7,8 +7,10 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemText from '@material-ui/core/ListItemText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
+import { useSelector } from 'react-redux';
 
 export default function UsersDialog({ group, open, handleClose, movieTitle }) {
+  const currentUser = useSelector(state => state.currentUser.user);
   return (
     <Dialog onClose={handleClose} aria-labelledby="simple-dialog-title" open={open}>
       <DialogTitle id="simple-dialog-title">
@@ -23,7 +25,7 @@ export default function UsersDialog({ group, open, handleClose, movieTitle }) {
                 alt={username}
               />
             </ListItemAvatar>
-            <ListItemText primary={username} />
+            <ListItemText primary={currentUser.username === username ? `${username} (You)` : username} />
           </ListItem>
         ))}
       </List>

@@ -24,9 +24,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
-
+function TabPanel({ children, value, index, ...other }) {
   return (
     <div
       role="tabpanel"
@@ -55,9 +53,7 @@ export default function MoviesLists({ movies, removeMovie }) {
   const classes = useStyles();
   const [value, setValue] = useState(0);
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+  const handleChange = (event, newValue) => setValue(newValue);
 
   return (
     <div className={classes.root}>
@@ -98,9 +94,9 @@ export default function MoviesLists({ movies, removeMovie }) {
               />
             ))
           ) : (
-            <p>No movies added yet. Try searching one up there ↑</p>
-          )
-        }
+              <p>No movies added yet. Try searching one up there ↑</p>
+            )
+          }
         </Grid>
       </TabPanel>
       <TabPanel className={classes.tabPanel} value={value} index={1}>
@@ -116,9 +112,9 @@ export default function MoviesLists({ movies, removeMovie }) {
                 Plot={Plot}
               />
             ))
-          ):(
-            <p>No matches found yet.</p>
-          )}
+          ) : (
+              <p>No matches found yet.</p>
+            )}
         </Grid>
       </TabPanel>
     </div>

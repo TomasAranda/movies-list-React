@@ -62,7 +62,7 @@ export default memo(function AuthForm({ signUp, buttonText, history }) {
         <TextField
           id='auth-username'
           className={classes.textField}
-          label={`${!signUp ? 'Email or ' : ''}Username`}
+          label={`Username`}
           error={Boolean(error[`authUser-${authType}`])}
           variant='filled'
           type='text'
@@ -105,7 +105,7 @@ export default memo(function AuthForm({ signUp, buttonText, history }) {
             variant='filled'
             type='text'
             inputProps={{
-              maxLength: 150
+              maxLength: 180
             }}
             autoComplete='off'
             value={values.profileImageUrl}

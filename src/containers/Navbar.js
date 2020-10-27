@@ -12,7 +12,7 @@ import { Link } from 'react-router-dom';
 import { useStyles } from '../styles/NavbarStyles';
 import { logout } from '../store/actions/auth';
 
-export default function Navbar(props) {
+export default function Navbar() {
   const classes = useStyles();
   const dispatch = useDispatch()
   const currentUser = useSelector(state => state.currentUser);
