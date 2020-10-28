@@ -1,5 +1,38 @@
 import axios from 'axios';
 
+const API_KEY = process.env.REACT_APP_MOVIES_API_KEY;
+
+export function moviesApiCall(query) {
+  return new Promise(async (resolve, reject) => {
+    const CancelToken = axios.CancelToken;
+    let source = CancelToken.source();
+    const searchUrl = `http://www.omdbapi.com/?apikey=${API_KEY}&s='${query}'`;
+    try {
+      if (source.current) source.current.cancel('Cancelled unnesessary request'); // Cancel the previous request before making a new request
+      
+      source.current = CancelToken.source(); // Create a new CancelToken
+
+      let { data } = await axios.get(searchUrl,
+        { cancelToken: source.current.token }
+      );
+      if (data.Response === "False") {
+        data = await axios.get(`http://www.omdbapi.com/?apikey=${API_KEY}&t='${query}'`,
+          { cancelToken: source.current.token }
+        );
+      }
+      if (data.Response === "False") return;
+      resolve(data.data ? data.data : data);
+    } catch (error) {
+      if (axios.isCancel(error) || error) console.warn('Request canceled', error.message); // Handle if request was cancelled
+      else {
+        // Handle usual errors
+        console.error('Something went wrong: ', error.message)
+        reject(error.message)
+      }
+    }
+  })
+}
+
 const instance = axios.create();
 
 export function setTokenHeader(token) {
