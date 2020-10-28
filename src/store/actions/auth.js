@@ -1,5 +1,5 @@
 import { apiCall, setTokenHeader } from '../../services/api';
-import { SET_CURRENT_USER } from '../actionTypes';
+import { SET_CURRENT_USER, SET_CURRENT_USER_GROUP } from '../actionTypes';
 import { setCurrentGroup } from './group';
 import { addError, removeError } from './errors';
 
@@ -7,6 +7,13 @@ export function setCurrentUser(user) {
   return {
     type: SET_CURRENT_USER,
     user
+  }
+}
+
+export function setCurrentUserGroup(groupID) {
+  return {
+    type: SET_CURRENT_USER_GROUP,
+    group: groupID
   }
 }
 
@@ -21,7 +28,7 @@ export function logout() {
         localStorage.clear();
         setAuthorizationToken(false);
         dispatch(setCurrentUser({}));
-        dispatch(setCurrentGroup(null));
+        dispatch(setCurrentGroup({}));
         resolve();
       } catch (err) {
         dispatch(addError({ errorType: 'logoutUser', message: err }));
@@ -39,9 +46,11 @@ export function authUser(type, userData) {
         localStorage.setItem('jwtToken', token);
         setAuthorizationToken(token);
         dispatch(setCurrentUser(user));
-        if(user.group) {
+        if (user.group) {
           const group = await apiCall('get', `/api/group/${user.group}`);
           dispatch(setCurrentGroup(group))
+          const usersInGroup = group.users.map(user => ({ _id: user._id, username: user.username, profileImageUrl: user.profileImageUrl }))
+          localStorage.setItem('currentGroup', JSON.stringify({ _id: group._id, name: group.name, users: usersInGroup }));
         }
         dispatch(removeError());
         resolve(user); // API call suceeded

@@ -16,9 +16,10 @@ export default function Main() {
         <Route exact path='/'>
           <Onboarding />
         </Route>
-        <Route path='/auth'>
-          <AuthPage />
-        </Route>
+        <Route
+          path='/auth'
+          render={props => <AuthPage {...props} />}
+        />
         <Route
           path='/list'
           component={withAuth(List)}

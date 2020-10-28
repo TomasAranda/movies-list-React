@@ -29,10 +29,10 @@ export const removeMovie = movie_id => {
 
 export const fetchMovies = () => {
   return async (dispatch, getState) => {
-    let { currentUser } = getState();
-    const group_id = currentUser.user.group;
-    const user_id = currentUser.user.id;
     try {
+      let { currentUser } = getState();
+      const group_id = currentUser.user.group;
+      const user_id = currentUser.user.id;
       const res = await apiCall("GET", `/api/group/${group_id}/user/${user_id}/movies`);
       dispatch(loadMovies(res));
     } catch (err) {
