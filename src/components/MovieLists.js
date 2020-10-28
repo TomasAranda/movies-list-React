@@ -82,7 +82,7 @@ export default function MoviesLists({ movies, removeMovie }) {
       <TabPanel className={classes.tabPanel} value={value} index={0}>
         <Grid container direction='row' justify='center' >
           {movies.userMovies.length ? (
-            movies.userMovies.map(({ _id, imdbID, Title, Poster, Plot }) => (
+            movies.userMovies.slice(0).reverse().map(({ _id, imdbID, Title, Poster, Plot }) => (
               <Movie
                 key={imdbID}
                 id={_id}
@@ -102,7 +102,7 @@ export default function MoviesLists({ movies, removeMovie }) {
       <TabPanel className={classes.tabPanel} value={value} index={1}>
         <Grid container direction='row' justify='center' >
           {movies.sharedMovies.length ? (
-            movies.sharedMovies.map(({ users, imdbID, Title, Poster, Plot }) => (
+            movies.sharedMovies.slice(0).reverse().map(({ users, imdbID, Title, Poster, Plot }) => (
               <Movie
                 key={imdbID}
                 users={users}
