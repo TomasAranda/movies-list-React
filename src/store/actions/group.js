@@ -35,10 +35,8 @@ function setUserGroup(groupName, isExistentGroup) {
       } else {
         group = await apiCall('post', '/api/group', { name: groupName });
       }
-      console.log(group);
       resolve(group);
     } catch (error) {
-      console.log()
       reject(error);
     }
   })

@@ -50,7 +50,7 @@ export function apiCall(method, path, data) {
         resolve(res.data)
       })
       .catch(err => {
-        if (err.request.status >= 500) reject({ message: "Sorry, something went wrong. Please try again later" });
+        if (err.request.status >= 500) reject({ message: "Sorry, the server is down. Please try again later" });
         reject(err.response.data.error)
       })
   })

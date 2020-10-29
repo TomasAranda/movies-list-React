@@ -9,21 +9,25 @@ import useAutocompleteState from '../hooks/useAutocompleteState';
 
 import axios from 'axios';
 
-export default function List() {
+export default function List({ isUserAuthenticated, userHasGroup }) {
   const movies = useSelector(state => state.movies);
+  const errors = useSelector(state => state.errors);
   const dispatch = useDispatch()
 
   const autocompleteState = useAutocompleteState();
 
   useEffect(() => {
-    dispatch(fetchMovies())
-      .catch(() => console.log("Error fetching movies"));
-  }, [dispatch])
+    if (isUserAuthenticated && userHasGroup) {
+      dispatch(fetchMovies())
+        .then(() => console.log('Fetched Movies'))
+        .catch((err) => console.log("Error fetching movies: ", err));
+    }
+  }, [dispatch, isUserAuthenticated, userHasGroup])
 
   const handleAddMovie = useCallback(newMovie => {
     dispatch(addMovie(newMovie))
-      .then(() => console.log("Movie added!"))
-      .catch(() => console.log("Something went wrong"))
+      .then((res) => console.log("Movie added!: ", res))
+      .catch((err) => console.log("Something went wrong: ", err))
   }, [dispatch]);
 
   const handleRemoveMovie = movieId => {
@@ -52,7 +56,7 @@ export default function List() {
   return (
     <>
       {memoizedSearchBar}
-      <MoviesLists movies={movies} removeMovie={handleRemoveMovie} />
+      <MoviesLists movies={movies} error={errors['fetchMovies'] || { message: null }} removeMovie={handleRemoveMovie} />
     </>
   )
 }

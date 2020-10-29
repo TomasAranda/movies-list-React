@@ -49,7 +49,7 @@ function a11yProps(index) {
   };
 }
 
-export default function MoviesLists({ movies, removeMovie }) {
+export default function MoviesLists({ error, movies, removeMovie }) {
   const classes = useStyles();
   const [value, setValue] = useState(0);
 
@@ -94,7 +94,7 @@ export default function MoviesLists({ movies, removeMovie }) {
               />
             ))
           ) : (
-              <p>No movies added yet. Try searching one up there ↑</p>
+              <p>{error['message'] ? error['message'] : 'No movies added yet. Try searching one up there ↑'}</p>
             )
           }
         </Grid>
@@ -113,7 +113,7 @@ export default function MoviesLists({ movies, removeMovie }) {
               />
             ))
           ) : (
-              <p>No matches found yet.</p>
+              <p>{error['message'] ? error['message'] : 'No matches found yet.'}</p>
             )}
         </Grid>
       </TabPanel>

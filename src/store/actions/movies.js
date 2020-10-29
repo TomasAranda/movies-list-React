@@ -28,28 +28,37 @@ export const removeMovie = movie_id => {
 };
 
 export const fetchMovies = () => {
-  return async (dispatch, getState) => {
-    try {
-      let { currentUser } = getState();
-      const group_id = currentUser.user.group;
-      const user_id = currentUser.user.id;
-      const res = await apiCall("GET", `/api/group/${group_id}/user/${user_id}/movies`);
-      dispatch(loadMovies(res));
-    } catch (err) {
-      if (err)
-        dispatch(addError({ errorType: 'fetchMovies', message: err.message }));
-    }
+  return (dispatch, getState) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        let { currentUser } = getState();
+        const group_id = currentUser.user.group;
+        const user_id = currentUser.user.id;
+        const res = await apiCall("GET", `/api/group/${group_id}/user/${user_id}/movies`);
+        dispatch(loadMovies(res));
+        resolve(res);
+      } catch (err) {
+        if (err) dispatch(addError({ errorType: 'fetchMovies', message: err.message }));
+        reject(err);
+      }
+    })
   };
 };
 
-export const addMovie = (movieData) => async (dispatch, getState) => {
-  let { currentUser } = getState();
-  const group_id = currentUser.user.group;
-  const user_id = currentUser.user.id;
-  try {
-    const res = await apiCall("post", `/api/group/${group_id}/user/${user_id}/movies`, { ...movieData });
-    dispatch(loadMovies(res));
-  } catch (err) {
-    if (err) dispatch(addError({ errorType: 'addMovie', message: err.message }));
-  }
-};
+export function addMovie(movieData) {
+  return (dispatch, getState) => {
+    return new Promise(async (resolve, reject) => {
+      let { currentUser } = getState();
+      const group_id = currentUser.user.group;
+      const user_id = currentUser.user.id;
+      try {
+        const res = await apiCall("post", `/api/group/${group_id}/user/${user_id}/movies`, { ...movieData });
+        dispatch(loadMovies(res));
+        resolve(res);
+      } catch (err) {
+        if (err) dispatch(addError({ errorType: 'addMovie', message: err.message }));
+        reject(err);
+      }
+    })
+  };
+}
