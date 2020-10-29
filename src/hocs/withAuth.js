@@ -1,15 +1,16 @@
 import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
 
-export default function withAuth(ComponentToBeRendered) {
+export default function withAuth(ComponentToBeRendered, isUserAuthenticated, userHasGroup) {
   function Authenticate(props) {
-    const isAuthenticated = useSelector(state => state.currentUser.isAuthenticated);
-
+    const { history, location } = props;
     useEffect(() => {
-      if (isAuthenticated === false) {
-        props.history.push("/auth/signin");
+      if (!isUserAuthenticated && location.pathname !== '/' && location.pathname !== '/auth/signin' && location.pathname !== '/auth/signup') {
+        history.push("/auth/signin");
+        if(!userHasGroup && location.pathname !== '/auth/signup/group') {
+          history.push("/auth/signup/group");
+        }
       }
-    })
+    }, [history, location.pathname]);
 
     return <ComponentToBeRendered {...props} />;
   }

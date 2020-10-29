@@ -11,7 +11,7 @@ import AuthForm from '../components/AuthForm';
 
 import withAuth from '../hocs/withAuth';
 
-export default function AuthPage({ history }) {
+export default function AuthPage({ history, isUserAuthenticated, userHasGroup }) {
   const dispatch = useDispatch();
   const errors = useSelector(state => state.errors);
 
@@ -22,7 +22,6 @@ export default function AuthPage({ history }) {
         if (!user.group) history.push('/auth/signup/group');
         else history.push('/list');
       })
-      .catch(err => console.log(err));
   };
 
   const handleSetGroup = async (event, groupName, isExistentGroup) => {
@@ -32,20 +31,27 @@ export default function AuthPage({ history }) {
       .catch(err => console.log(err.message));
   };
 
-  const WithAuthGroupForm = withAuth(GroupForm);
+  const WithAuthForm = withAuth(AuthForm, isUserAuthenticated, userHasGroup);
+  const WithAuthGroupForm = withAuth(GroupForm, isUserAuthenticated, userHasGroup);
 
   return (
     <Page>
       <Switch>
-        <Route exact path='/auth/signin'>
-          <AuthForm buttonText='Log In' handleSubmit={handleAuthUser} errors={errors} />
-        </Route>
-        <Route exact path='/auth/signup'>
-          <AuthForm signUp buttonText='Sign Up' handleSubmit={handleAuthUser} errors={errors} />
-        </Route>
-        <Route exact path='/auth/signup/group'>
-          <WithAuthGroupForm handleSetGroup={handleSetGroup} errors={errors} />
-        </Route>
+        <Route
+          exact
+          path='/auth/signin'
+          render={props => <WithAuthForm buttonText='Log In' handleSubmit={handleAuthUser} errors={errors} {...props} />}
+        />
+        <Route
+          exact
+          path='/auth/signup'
+          render={props => <WithAuthForm signUp buttonText='Sign Up' handleSubmit={handleAuthUser} errors={errors} {...props} />}
+        />
+        <Route
+          exact
+          path='/auth/signup/group'
+          render={props => <WithAuthGroupForm handleSetGroup={handleSetGroup} errors={errors} {...props} />}
+        />
         <Route>
           <Redirect to='/auth/signin' />
         </Route>
