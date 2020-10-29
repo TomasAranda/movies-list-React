@@ -43,7 +43,7 @@ export default function GroupForm({ handleSetGroup, errors }) {
         Or join an existent group
       </Typography>
       <Typography className={classes.title} variant='h2' color='textPrimary'>Join Group</Typography>
-      <form className={classes.form} onSubmit={(evt) => handleSetGroup(evt, existentGroup, false)}>
+      <form className={classes.form} onSubmit={(evt) => handleSetGroup(evt, existentGroup, true)}>
         <TextField
           id='create-group-name'
           className={classes.textField}

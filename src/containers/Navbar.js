@@ -34,7 +34,7 @@ export default function Navbar() {
           </Typography>
           <div className={classes.grow} />
           {currentUser.isAuthenticated && (
-            <NavUserMenu user={currentUser.user} group={group} onLogout={handleLogout} />
+            <NavUserMenu user={currentUser.user} group={group} handleLogout={handleLogout} />
           )}
         </Toolbar>
       </AppBar>

@@ -20,15 +20,11 @@ export default function Onboarding() {
         <Typography variant='body1' align='center'>Register to start</Typography>
         <Grid className={classes.registerButtons} container justify='center'>
           <Button variant="contained" size='large' component='button' color="primary">
-            <Link to='/auth/signin'>
-              Log In
-                </Link>
+            <Link to='/auth/signin'>Log In</Link>
           </Button>
           <p>or</p>
           <Button variant="contained" size='large' component='button' color="primary">
-            <Link to='/auth/signup'>
-              Sign Up
-                </Link>
+            <Link to='/auth/signup'>Sign Up</Link>
           </Button>
         </Grid>
       </Grid>

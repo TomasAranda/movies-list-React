@@ -39,7 +39,7 @@ export const useStyles = makeStyles((theme) => ({
     backgroundColor: 'rgba(0,0,0,.75)',
     color: '#757575',
     height: '70%',
-    minHeight: '380px',
+    minHeight: '430px',
     width: '100%',
     padding: theme.spacing(2),
     maxWidth: '700px',
