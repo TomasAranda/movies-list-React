@@ -41,7 +41,7 @@ export default function List({ isUserAuthenticated, userHasGroup }) {
   const handleSearch = useCallback(async () => {
     try {
       if (autocompleteState.value) {
-        const movieUrl = `http://omdbapi.com/?apikey=6abbe3eb&i=${autocompleteState.value.imdbID}`
+        const movieUrl = `https://omdbapi.com/?apikey=6abbe3eb&i=${autocompleteState.value.imdbID}`
         const { data } = await axios.get(movieUrl);
         handleAddMovie(data);
         autocompleteState.setValue(null);

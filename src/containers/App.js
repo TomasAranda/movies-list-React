@@ -22,7 +22,7 @@ const store = configureStore();
     try {
       const decoded = jwtDecode(localStorage.jwtToken);
       store.dispatch(setCurrentUser(decoded));
-      if (decoded.group && localStorage.currentGroup) {
+      if (decoded.group || localStorage.currentGroup) {
         const group = JSON.parse(localStorage.currentGroup);
         store.dispatch(setCurrentGroup(group));
       }
