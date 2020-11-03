@@ -22,6 +22,7 @@ export default function AuthPage({ history, isUserAuthenticated, userHasGroup })
         if (!user.group) history.push('/auth/signup/group');
         else history.push('/list');
       })
+      .catch((err) => console.log(err));
   };
 
   const handleSetGroup = async (event, groupName, isExistentGroup) => {
