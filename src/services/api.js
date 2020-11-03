@@ -6,7 +6,7 @@ export function moviesApiCall(query) {
   return new Promise(async (resolve, reject) => {
     const CancelToken = axios.CancelToken;
     let source = CancelToken.source();
-    const searchUrl = `http://www.omdbapi.com/?apikey=${API_KEY}&s='${query}'`;
+    const searchUrl = `https://www.omdbapi.com/?apikey=${API_KEY}&s='${query}'`;
     try {
       if (source.current) source.current.cancel('Cancelled unnesessary request'); // Cancel the previous request before making a new request
       
@@ -16,7 +16,7 @@ export function moviesApiCall(query) {
         { cancelToken: source.current.token }
       );
       if (data.Response === "False") {
-        data = await axios.get(`http://www.omdbapi.com/?apikey=${API_KEY}&t='${query}'`,
+        data = await axios.get(`https://www.omdbapi.com/?apikey=${API_KEY}&t='${query}'`,
           { cancelToken: source.current.token }
         );
       }
