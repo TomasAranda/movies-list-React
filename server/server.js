@@ -5,7 +5,7 @@ const app = express();
 const buildPath = path.join(__dirname, '..', 'build');
 const port = process.env.PORT || 3000;
 
-app.use(express.static(publicPath));
+app.use(express.static(buildPath));
 app.use(
   '/api',
   createProxyMiddleware({
