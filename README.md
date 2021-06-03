@@ -1,3 +1,16 @@
+## Deployed demo [here](https://react-movies-lists.herokuapp.com/)
+### Try signing in with:
+- Username: Test
+- Password: password
+
+This is an application made for store a share movies watchlist, where you can see matching movies or series with your friends.
+
+You can add and remove movies to your watchlist. Find movies on the top search bar and then click the + sign to add.
+
+Your friends can join your group just by typing in your group name when they sign up.
+
+---
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
