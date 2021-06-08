@@ -2,6 +2,7 @@ import { apiCall } from '../../services/api';
 import { SET_CURRENT_GROUP } from '../actionTypes';
 import { setCurrentUserGroup } from './auth';
 import { addError, removeError } from './errors';
+import { setLoading } from './loading';
 
 export function setCurrentGroup(group) {
   return {
@@ -44,6 +45,7 @@ function setUserGroup(groupName, isExistentGroup) {
 
 export function setGroup(groupName, isExistentGroup) {
   return dispatch => {
+    dispatch(setLoading(true));
     return new Promise(async (resolve, reject) => {
       try {
         const group = await setUserGroup(groupName, isExistentGroup);
@@ -52,8 +54,10 @@ export function setGroup(groupName, isExistentGroup) {
         localStorage.setItem('currentGroup', JSON.stringify({ _id: group._id, name: group.name, users: usersInGroup }));
         dispatch(setCurrentUserGroup(group._id));
         dispatch(removeError());
+        dispatch(setLoading(false));
         resolve(); // API call suceeded
       } catch (err) {
+        dispatch(setLoading(false));
         if (err) dispatch(addError({ errorType: isExistentGroup ? 'editGroup' : 'createGroup', message: err.message }));
         reject(err); // API call failed
       }

@@ -16,7 +16,7 @@ export default function List({ isUserAuthenticated, userHasGroup }) {
 
   const autocompleteState = useAutocompleteState();
 
-  ///////////////////////////// TODO: ADD SNACKBAR MESSAGES ON MOVIE CHANGES (ADD, REMOVE, FETCH ERRORS) //////////////////////////////////
+  // TODO: ADD SNACKBAR MESSAGES ON MOVIE CHANGES (ADD, REMOVE, FETCH ERRORS) //
 
   useEffect(() => {
     if (isUserAuthenticated && userHasGroup) {
