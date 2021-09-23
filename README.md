@@ -3,7 +3,7 @@
 - Username: Test
 - Password: password
 
-This is an application made for store a share movies watchlist, where you can see matching movies or series with your friends.
+This is an application made for store and share movies watchlist, where you can see matching movies or series with your friends.
 
 You can add and remove movies to your watchlist. Find movies on the top search bar and then click the + sign to add.
 
